@@ -5,42 +5,66 @@ import Button from "./ui/Button";
 import { Flame, ChevronRight, Play } from "lucide-react";
 import NFTCard from "./NFTCard";
 import Stat from "./Stat";
+import { UserContext } from "@/app/context/UserContext";
+import { useContext, useEffect, useState } from "react";
+import { Contract } from "ethers";
 
-const HeroSection = () => (
-  <section className="mx-auto max-w-7xl px-6 pt-6 pb-10">
-    <div className="grid items-center gap-10 md:grid-cols-2">
-      
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        transition={{ duration: 0.6 }}
-      >
-        <TrendingBadge />
-        <MainHeading />
-        <Description />
-        <ActionButtons />
-        <StatsGrid />
-      </motion.div>
+export default function HeroSection() {
 
-    
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }} 
-        animate={{ opacity: 1, y: 0 }} 
-        transition={{ duration: 0.6, delay: 0.05 }}
-      >
-        <div className="relative rounded-3xl border border-zinc-800 bg-zinc-950/50 p-4 shadow-xl">
-          <div className="grid grid-cols-2 gap-4">
-            <NFTCard seed={1} title="Spectrum Bloom #047" price="0.82 ETH" user="@luna" />
-            <NFTCard seed={2} title="Circuit Dreams #311" price="2.10 ETH" user="@ryu" />
-            <NFTCard seed={3} title="Void Runner #992" price="0.33 ETH" user="@sol" />
-            <NFTCard seed={4} title="Glitch Muse #204" price="1.75 ETH" user="@nova" />
+  const web3 = useContext(UserContext);
+  const [listings, setListings] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!web3?.contract) return;
+
+    const fetchListings = async () => {
+      try {
+        const data = await web3.contract.getListings(0, 4);
+        setListings(data);
+      } catch (err) {
+        console.error("Error fetching listings:", err);
+      }
+    };
+
+    fetchListings();
+  }, [web3]);
+
+
+  return (
+    <section className="mx-auto max-w-7xl px-6 pt-6 pb-10">
+      <div className="grid items-center gap-10 md:grid-cols-2">
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <TrendingBadge />
+          <MainHeading />
+          <Description />
+          <ActionButtons />
+          <StatsGrid />
+        </motion.div>
+
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.05 }}
+        >
+          <div className="relative rounded-3xl border border-zinc-800 bg-zinc-950/50 p-4 shadow-xl">
+            <div className="grid grid-cols-2 gap-4">
+              <NFTCard seed={1} title="Spectrum Bloom #047" price="0.82 ETH" user="@luna" />
+              <NFTCard seed={2} title="Circuit Dreams #311" price="2.10 ETH" user="@ryu" />
+              <NFTCard seed={3} title="Void Runner #992" price="0.33 ETH" user="@sol" />
+              <NFTCard seed={4} title="Glitch Muse #204" price="1.75 ETH" user="@nova" />
+            </div>
           </div>
-        </div>
-      </motion.div>
-    </div>
-  </section>
-);
-
+        </motion.div>
+      </div>
+    </section>
+  );
+}
 
 const TrendingBadge = () => (
   <div className="inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/50 px-3 py-1 text-xs text-zinc-300">
@@ -79,5 +103,3 @@ const StatsGrid = () => (
     <Stat label="Collections" value="9.7k" />
   </div>
 );
-
-export default HeroSection;

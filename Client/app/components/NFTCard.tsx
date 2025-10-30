@@ -26,7 +26,7 @@ const NFTCard = ({
                     <h4 className="text-zinc-100 font-medium leading-tight">{title}</h4>
                     <p className="text-zinc-400 text-sm">by {user}</p>
                 </div>
-                <Badge>{price}</Badge>
+                <div className="bg-zinc-800 rounded-xl h-8 w-20 mt-4 p-1">{price}</div>
             </div>
             <div className="mt-4 flex items-center gap-2">
                 <Button size="sm" className="rounded-xl">Bid now</Button>

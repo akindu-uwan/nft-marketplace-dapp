@@ -15,7 +15,8 @@
     "hardhat": "^2.26.3"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^5.0.0",
+    "@openzeppelin/contracts": "^5.4.0",
+    "ethers": "^6.15.0",
     "framer-motion": "^12.23.24",
     "lucide-react": "^0.546.0"
   }
